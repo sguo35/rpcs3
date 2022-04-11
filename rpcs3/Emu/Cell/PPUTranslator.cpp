@@ -4257,7 +4257,7 @@ void PPUTranslator::FCTIW(ppu_opcode_t op)
 #ifdef ARCH_X64
 	SetFpr(op.frd, m_ir->CreateXor(xormask, Call(GetType<s32>(), "llvm.x86.sse2.cvtsd2si", m_ir->CreateInsertElement(GetUndef<f64[2]>(), b, u64{0}))));
 #else
-	SetFpr(op.frd, m_ir->CreateXor(xormask, Call(GetType<s32>(), "llvm.aarch64.neon.fcvtns.i32.f64", m_ir->CreateInsertElement(GetUndef<f64[2]>(), b, u64{0}))));
+	SetFpr(op.frd, m_ir->CreateXor(xormask, Call(GetType<s32>(), "llvm.aarch64.neon.fcvtns.i32.f64", b)));
 #endif
 
 	//SetFPSCR_FR(Call(GetType<bool>(), m_pure_attr, "__fctiw_get_fr", b));
@@ -4277,7 +4277,7 @@ void PPUTranslator::FCTIWZ(ppu_opcode_t op)
 #ifdef ARCH_X64
 	SetFpr(op.frd, m_ir->CreateXor(xormask, Call(GetType<s32>(), "llvm.x86.sse2.cvttsd2si", m_ir->CreateInsertElement(GetUndef<f64[2]>(), b, u64{0}))));
 #else
-	SetFpr(op.frd, m_ir->CreateXor(xormask, Call(GetType<s32>(), "llvm.aarch64.neon.fcvtzu.i32.f64", m_ir->CreateInsertElement(GetUndef<f64[2]>(), b, u64{0}))));
+	SetFpr(op.frd, m_ir->CreateXor(xormask, Call(GetType<s32>(), "llvm.aarch64.neon.fcvtzs.i32.f64", b)));
 #endif
 }
 
@@ -4551,7 +4551,7 @@ void PPUTranslator::FCTID(ppu_opcode_t op)
 #ifdef ARCH_X64
 	SetFpr(op.frd, m_ir->CreateXor(xormask, Call(GetType<s64>(), "llvm.x86.sse2.cvtsd2si64", m_ir->CreateInsertElement(GetUndef<f64[2]>(), b, u64{0}))));
 #else
-	SetFpr(op.frd, m_ir->CreateXor(xormask, Call(GetType<s64>(), "llvm.aarch64.neon.fcvtns.i64.f64", m_ir->CreateInsertElement(GetUndef<f64[2]>(), b, u64{0}))));
+	SetFpr(op.frd, m_ir->CreateXor(xormask, Call(GetType<s64>(), "llvm.aarch64.neon.fcvtns.i64.f64", b)));
 #endif
 
 
@@ -4572,7 +4572,7 @@ void PPUTranslator::FCTIDZ(ppu_opcode_t op)
 #ifdef ARCH_X64
 	SetFpr(op.frd, m_ir->CreateXor(xormask, Call(GetType<s64>(), "llvm.x86.sse2.cvttsd2si64", m_ir->CreateInsertElement(GetUndef<f64[2]>(), b, u64{0}))));
 #else
-	SetFpr(op.frd, m_ir->CreateXor(xormask, Call(GetType<s64>(), "llvm.aarch64.neon.fcvtzu.i64.f64", m_ir->CreateInsertElement(GetUndef<f64[2]>(), b, u64{0}))));
+	SetFpr(op.frd, m_ir->CreateXor(xormask, Call(GetType<s64>(), "llvm.aarch64.neon.fcvtzs.i64.f64", b)));
 #endif
 }
 
