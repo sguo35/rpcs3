@@ -1149,8 +1149,18 @@ extern void ppu_execute_syscall(ppu_thread& ppu, u64 code)
 
 		if (const auto func = g_ppu_syscall_table[code].first)
 		{
+#ifdef __APPLE__
+			pthread_jit_write_protect_np(false);
+#endif
 			func(ppu, {}, vm::_ptr<u32>(ppu.cia), nullptr);
 			ppu_log.trace("Syscall '%s' (%llu) finished, r3=0x%llx", ppu_syscall_code(code), code, ppu.gpr[3]);
+
+#ifdef __APPLE__
+			pthread_jit_write_protect_np(true);
+			// Flush all cache lines after toggling write protections
+			asm("ISB");
+			asm("DSB ISH");
+#endif
 			return;
 		}
 	}

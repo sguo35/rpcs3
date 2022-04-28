@@ -186,7 +186,6 @@ Function* PPUTranslator::Translate(const ppu_function& info)
 
 	const auto body = BasicBlock::Create(m_context, "__body", m_function);
 
-	//Call(GetType<void>(), "__trace", GetAddr());
 	if (need_check)
 	{
 		// Check status register in the entry block
@@ -1947,7 +1946,6 @@ void PPUTranslator::BC(ppu_opcode_t op)
 	}
 
 	UseCondition(CheckBranchProbability(op.bo), CheckBranchCondition(op.bo, op.bi));
-
 	CallFunction(target);
 }
 
@@ -1993,7 +1991,6 @@ void PPUTranslator::B(ppu_opcode_t op)
 	{
 		RegStore(GetAddr(+4), m_lr);
 	}
-
 	FlushRegisters();
 	CallFunction(target);
 }
@@ -2017,7 +2014,6 @@ void PPUTranslator::BCLR(ppu_opcode_t op)
 	}
 
 	UseCondition(CheckBranchProbability(op.bo), CheckBranchCondition(op.bo, op.bi));
-
 	CallFunction(0, target);
 }
 
@@ -2080,7 +2076,6 @@ void PPUTranslator::BCCTR(ppu_opcode_t op)
 	}
 
 	UseCondition(CheckBranchProbability(op.bo | 0x4), CheckBranchCondition(op.bo | 0x4, op.bi));
-
 	CallFunction(0, target);
 }
 
@@ -2673,7 +2668,6 @@ void PPUTranslator::LDARX(ppu_opcode_t op)
 		m_ir->CreateRetVoid();
 		return;
 	}
-
 	SetGpr(op.rd, Call(GetType<u64>(), "__ldarx", m_thread, op.ra ? m_ir->CreateAdd(GetGpr(op.ra), GetGpr(op.rb)) : GetGpr(op.rb)));
 }
 

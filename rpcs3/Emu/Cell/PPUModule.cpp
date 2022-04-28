@@ -903,7 +903,7 @@ void try_spawn_ppu_if_exclusive_program(const ppu_module& m)
 		};
 
 		auto ppu = idm::make_ptr<named_thread<ppu_thread>>(p, "test_thread", 0);
-
+		printf("Setting cia to %x\n", m.funcs[0].addr);
 		ppu->cia = m.funcs[0].addr;
 
 		// For kernel explorer
@@ -1876,6 +1876,7 @@ bool ppu_load_exec(const ppu_exec_object& elf)
 	}
 
 	// Set command line arguments, run entry function
+	printf("elf header entry %d\n", elf.header.e_entry);
 	ppu->cmd_list
 	({
 		{ ppu_cmd::set_args, 8 }, u64{Emu.argv.size()}, u64{argv.addr()}, u64{envp.addr()}, u64{0}, u64{ppu->id}, u64{tls_vaddr}, u64{tls_fsize}, u64{tls_vsize},
